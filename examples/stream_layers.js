@@ -30,6 +30,14 @@ function stream_waves(n, m) {
 }
 
 function stream_index(d, i) {
-  return {x: i, y: Math.max(0, d)};
+  return {x: i,
+	      y: Math.max(0, d),
+	      y_err:(function() { var yerror = d/2.0*Math.random(); return [yerror,yerror]; })(),
+	      box: (function() { if (Math.random() < 0.5) {
+	    	     return [Math.max(0, d)-Math.random(), Math.max(0,d)+Math.random() ];
+	          } else {
+		    	     return [Math.max(0,d)+Math.random(), Math.max(0,d)-Math.random() ];
+	          }})()
+	      };
 }
 

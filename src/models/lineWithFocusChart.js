@@ -207,10 +207,15 @@ nv.models.lineWithFocusChart = function() {
         );
 
       g.select('.nv-context')
-          .attr('transform', 'translate(0,' + ( availableHeight1 + margin.bottom + margin2.top) + ')')
+          .attr('transform', 'translate(0,' + ( availableHeight1 + margin.bottom + margin2.top) + ')');
 
+      // For the context data, remove the box and errorbars
       var contextLinesWrap = g.select('.nv-context .nv-linesWrap')
-          .datum(data.filter(function(d) { return !d.disabled }))
+          .datum(data.map(function(d,i) {
+        	  //TODO figure out all of the keys that are used
+              return {"color": d.color, "key":d.key, "values":d.values }; 
+          })
+          .filter(function(d) { return !d.disabled; } ));
 
       d3.transition(contextLinesWrap).call(lines2);
 
@@ -260,7 +265,7 @@ nv.models.lineWithFocusChart = function() {
       if (brushExtent) brush.extent(brushExtent);
 
       var brushBG = g.select('.nv-brushBackground').selectAll('g')
-          .data([brushExtent || brush.extent()])
+          .data([brushExtent || brush.extent()]);
 
       var brushBGenter = brushBG.enter()
           .append('g');
@@ -394,7 +399,9 @@ nv.models.lineWithFocusChart = function() {
                     key: d.key,
                     values: d.values.filter(function(d,i) {
                       return lines.x()(d,i) >= extent[0] && lines.x()(d,i) <= extent[1];
-                    })
+                    }),
+                    errorBars: d.errorBars,
+                    box: d.box
                   }
                 })
             );
