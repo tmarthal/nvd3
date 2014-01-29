@@ -59,12 +59,15 @@ nv.addGraph(function() {
             y: function(d) { return d[1] }
         });
 
+  
  // chart.transitionDuration(500);
   chart.xAxis
-  	.tickFormat(function(d,i) { return d[0]; });
+  	.tickFormat(function(d,i) {
+  	  return d3.time.format('%m-%d-%y')(new Date(d));
+  	});
     //  .tickFormat(d3.format(',f'));
   chart.x2Axis
-  	.tickFormat(function(d,i) { return d[0]; });
+  	.tickFormat(function(d,i) {   	  return d3.time.format('%m-%Y')(new Date(d));  });
 //      .tickFormat(d3.format(',f'));
 
   chart.yAxis
